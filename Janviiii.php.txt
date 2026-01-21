@@ -1,0 +1,261 @@
+[1:36 pm, 21/01/2026] ~Janviiii: <?php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Demo login credentials
+    if ($username == "patient" && $password == "1234") {
+        $_SESSION['user'] = $username;
+        header("Location: dashboard.php");
+    } else {
+        $error = "Invalid login details";
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container small">
+    <h2>Patient Login</h2>
+
+    <?php if(isset($error)) echo "<p class='error'>$error</p>"; ?>
+
+    <form method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <p><b>Demo Login:</b> patient / 1234</p>
+</div>
+
+</body>
+</html>
+[1:37 pm, 21/01/2026] ~Janviiii: <?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>Online Diagnostic Lab</h1>
+    <a href="logout.php" class="logout">Logout</a>
+</div>
+
+<div class="nav">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="book_test.php">Book Test</a>
+    <a href="reports.php">Reports</a>
+</div>
+
+<div class="container">
+    <h2>Welcome, Patient 👋</h2>
+
+    <div class="cards">
+        <div class="card">Total Tests<br><b>5</b></div>
+        <div class="card">Reports Ready<br><b>3</b></div>
+        <div class="card">Pending<br><b>2</b></div>
+    </div>
+</div>
+
+</body>
+</html>
+[1:37 pm, 21/01/2026] ~Janviiii: <?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>Book Diagnostic Test</h1>
+</div>
+
+<div class="nav">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="book_test.php">Book Test</a>
+    <a href="reports.php">Reports</a>
+</div>
+
+<div class="container">
+    <form method="post">
+        <select name="test" required>
+            <option>Select Test</option>
+            <option>Blood Test</option>
+            <option>Sugar Test</option>
+            <option>Thyroid Test</option>
+        </select>
+
+        <input type="date" name="date" required>
+        <button type="submit">Book Test</button>
+    </form>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "<p class='success'>Test Booked Successfully ✔</p>";
+    }
+    ?>
+</div>
+
+</body>
+</html>
+[1:37 pm, 21/01/2026] ~Janviiii: <?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>Test Reports</h1>
+</div>
+
+<div class="nav">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="book_test.php">Book Test</a>
+    <a href="reports.php">Reports</a>
+</div>
+
+<div class="container">
+    <table>
+        <tr>
+            <th>Test</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>Blood Test</td>
+            <td>10-Jan-2026</td>
+            <td class="ready">Ready</td>
+        </tr>
+        <tr>
+            <td>Sugar Test</td>
+            <td>15-Jan-2026</td>
+            <td class="pending">Pending</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
+[1:37 pm, 21/01/2026] ~Janviiii: <?php
+session_start();
+session_destroy();
+header("Location: login.php");
+[1:37 pm, 21/01/2026] ~Janviiii: body {
+    font-family: Arial;
+    background: #f4f9ff;
+    margin: 0;
+}
+
+.header {
+    background: #0a74da;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.logout {
+    float: right;
+    color: white;
+    margin-top: -30px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.nav {
+    background: #094a9c;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    padding: 20px;
+}
+
+.small {
+    width: 300px;
+    margin: 80px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    background: #0a74da;
+    color: white;
+    border: none;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 150px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.ready { color: green; font-weight: bold; }
+.pending { color: red; font-weight: bold; }
+
+.success { color: green; font-weight: bold; }
+.error { color: red; font-weight: bold; }
